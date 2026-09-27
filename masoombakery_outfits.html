@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Masoombakery">
+  <meta name="theme-color" content="#FAF8F5">
+  <title>MASOOMBAKERY OUTFITS // Personal Wardrobe Archive</title>
+  
+  <!-- Safe Tailwind CDN Setup: Pre-configure window.tailwind to prevent ReferenceError in sandboxes -->
+  <script>
+    window.tailwind = window.tailwind || {};
+    window.tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            paper: {
+              bone: '#FAF8F5',
+              cream: '#F2EFE9',
+              card: '#FFFFFF',
+              border: '#E5DFD5',
+              deep: '#EBE5DA'
+            },
+            ink: {
+              pure: '#141312',
+              charcoal: '#262422',
+              muted: '#66615C',
+              faded: '#9E9890'
+            },
+            accent: {
+              terracotta: '#B65D38',
+              espresso: '#2F231D',
+              olive: '#556353',
+              sand: '#D8CEBE'
+            }
+          },
+          fontFamily: {
+            serif: ['"Bodoni Moda"', '"Italiana"', 'serif'],
+            mono: ['"Space Mono"', 'monospace'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Minimalist Line Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Supabase JS Client for Cloud Sync -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <!-- High Fashion Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,800;0,6..96,900;1,6..96,400&family=Italiana&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #FAF8F5;
+      background-image: 
+        radial-gradient(#E2DCD1 0.75px, transparent 0.75px),
+        linear-gradient(to right, rgba(229, 223, 213, 0.3) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(229, 223, 213, 0.3) 1px, transparent 1px);
+      background-size: 20px 20px, 60px 60px, 60px 60px;
+      color: #141312;
+      min-height: 100vh;
+      -webkit-tap-highlight-color: transparent;
+      padding-bottom: 95px;
+    }
+
+    .polaroid-frame {
+      background: #FFFFFF;
+      box-shadow: 0 2px 10px rgba(20, 19, 18, 0.05), 0 1px 3px rgba(20, 19, 18, 0.03);
+      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s ease;
+    }
+
+    .washi-tape {
+      position: absolute;
+      top: -9px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-1deg);
+      width: 72px;
+      height: 18px;
+      background-color: rgba(245, 238, 225, 0.85);
+      border-left: 2px dashed rgba(185, 175, 160, 0.6);
+      border-right: 2px dashed rgba(185, 175, 160, 0.6);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      backdrop-filter: blur(1px);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .editorial-stamp {
+      border: 1.5px solid #2F231D;
+      text-transform: uppercase;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.1em;
+      transform: rotate(-1.5deg);
+      display: inline-block;
+    }
+
+    .reel-blur {
+      filter: blur(2px);
+      opacity: 0.6;
+      transform: scale(0.98);
+      transition: all 0.2s ease-in-out;
+    }
+
+    /* Mannequin Mirror Layer Outline */
+    .mirror-layer {
+      transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .mirror-layer:active {
+      transform: scale(0.98);
+    }
+
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: #F2EFE9; }
+    ::-webkit-scrollbar-thumb { background: #141312; }
+  </style>
+</head>
+
+<body class="font-sans antialiased text-ink-charcoal selection:bg-accent-sand/40">
+
+  <header class="border-b border-paper-border bg-paper-bone/95 backdrop-blur sticky top-0 z-30">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="text-[9px] font-mono tracking-widest uppercase text-accent-terracotta font-bold">
+            [PERSONAL_ARCHIVE]
+          </span>
+          <span class="text-ink-faded text-[10px] font-mono">• LAHORE</span>
+          <button onclick="openCloudModal()" id="cloud-status-pill" class="ml-1 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-paper-cream border border-paper-border text-[9px] font-mono hover:border-ink-pure">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-500" id="sync-dot"></span>
+            <span id="sync-text" class="text-ink-muted">Local</span>
+          </button>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-serif font-black tracking-tight text-ink-pure uppercase leading-none mt-0.5">
+          Masoombakery
+        </h1>
+        <span class="text-xs font-serif italic text-ink-muted">outfits // daily rotation</span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="openUploadSheet()" class="flex items-center gap-1.5 px-3 py-2 bg-ink-pure text-paper-bone font-mono text-xs font-bold uppercase tracking-wider hover:bg-ink-charcoal transition-all">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">Add Piece</span>
+        </button>
+        <button onclick="openCloudModal()" class="p-2 border border-paper-border bg-paper-card hover:bg-paper-cream text-ink-charcoal text-xs font-mono" title="Cloud Settings">
+          <i data-lucide="cloud" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 py-5">
+
+    <!-- VIEW 1: OOTD GENERATOR / REELS -->
+    <section id="view-generator" class="view-pane space-y-5">
+      
+      <!-- Rotation Scenario Filters -->
+      <div class="flex items-center justify-between gap-2 overflow-x-auto pb-1 scrollbar-none font-mono text-xs">
+        <div class="flex items-center gap-1.5 whitespace-nowrap">
+          <button onclick="setVibeFilter('all')" id="vibe-all" class="vibe-pill active px-3 py-1.5 border border-ink-pure bg-ink-pure text-paper-bone font-bold text-[11px]">
+            All Items
+          </button>
+          <button onclick="setVibeFilter('uni')" id="vibe-uni" class="vibe-pill px-3 py-1.5 border border-paper-border bg-paper-card text-ink-charcoal text-[11px] hover:border-ink-pure">
+            Uni Casual
+          </button>
+          <button onclick="setVibeFilter('meetup')" id="vibe-meetup" class="vibe-pill px-3 py-1.5 border border-paper-border bg-paper-card text-ink-charcoal text-[11px] hover:border-ink-pure">
+            Cafe & Meetup
+          </button>
+          <button onclick="setVibeFilter('eastern')" id="vibe-eastern" class="vibe-pill px-3 py-1.5 border border-paper-border bg-paper-card text-ink-charcoal text-[11px] hover:border-ink-pure">
+            Eastern Minimal
+          </button>
+        </div>
+      </div>
+
+      <!-- 5-Slot Reels Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+
+        <!-- SLOT 1: TOP / KURTI -->
+        <div class="polaroid-frame p-3 relative flex flex-col justify-between border border-paper-border">
+          <div class="washi-tape"></div>
+          <div class="flex items-center justify-between pb-1.5 border-b border-paper-border text-[10px] font-mono">
+            <span class="font-bold text-ink-pure">[01] TOP / KURTI</span>
+            <button onclick="toggleSlotLock('top')" id="lock-top" class="p-1 text-ink-muted hover:text-accent-terracotta">
+              <i data-lucide="unlock" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+          <div id="reel-box-top" class="h-44 sm:h-52 my-2 bg-paper-bone border border-paper-border flex flex-col items-center justify-center p-2 text-center relative overflow-hidden"></div>
+          <div class="border-t border-paper-border pt-1">
+            <p id="label-top" class="font-serif font-bold text-xs text-ink-pure truncate">No Tops Uploaded</p>
+            <p id="desc-top" class="font-mono text-[9px] text-ink-muted truncate">Awaiting first piece</p>
+          </div>
+        </div>
+
+        <!-- SLOT 2: BOTTOM / SHALWAR -->
+        <div class="polaroid-frame p-3 relative flex flex-col justify-between border border-paper-border">
+          <div class="washi-tape"></div>
+          <div class="flex items-center justify-between pb-1.5 border-b border-paper-border text-[10px] font-mono">
+            <span class="font-bold text-ink-pure">[02] BOTTOM / SHALWAR</span>
+            <button onclick="toggleSlotLock('bottom')" id="lock-bottom" class="p-1 text-ink-muted hover:text-accent-terracotta">
+              <i data-lucide="unlock" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+          <div id="reel-box-bottom" class="h-44 sm:h-52 my-2 bg-paper-bone border border-paper-border flex flex-col items-center justify-center p-2 text-center relative overflow-hidden"></div>
+          <div class="border-t border-paper-border pt-1">
+            <p id="label-bottom" class="font-serif font-bold text-xs text-ink-pure truncate">No Bottoms Uploaded</p>
+            <p id="desc-bottom" class="font-mono text-[9px] text-ink-muted truncate">Awaiting first piece</p>
+          </div>
+        </div>
+
+        <!-- SLOT 3: HIJAB & HEADWEAR -->
+        <div class="polaroid-frame p-3 relative flex flex-col justify-between border border-paper-border">
+          <div class="washi-tape"></div>
+          <div class="flex items-center justify-between pb-1.5 border-b border-paper-border text-[10px] font-mono">
+            <span class="font-bold text-ink-pure">[03] HIJAB FRAME</span>
+            <button onclick="toggleSlotLock('hijab')" id="lock-hijab" class="p-1 text-ink-muted hover:text-accent-terracotta">
+              <i data-lucide="unlock" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+          <div id="reel-box-hijab" class="h-44 sm:h-52 my-2 bg-paper-bone border border-paper-border flex flex-col items-center justify-center p-2 text-center relative overflow-hidden"></div>
+          <div class="border-t border-paper-border pt-1">
+            <p id="label-hijab" class="font-serif font-bold text-xs text-ink-pure truncate">No Hijabs Uploaded</p>
+            <p id="desc-hijab" class="font-mono text-[9px] text-ink-muted truncate">Awaiting first piece</p>
+          </div>
+        </div>
+
+        <!-- SLOT 4: FOOTWEAR -->
+        <div class="polaroid-frame p-3 relative flex flex-col justify-between border border-paper-border">
+          <div class="washi-tape"></div>
+          <div class="flex items-center justify-between pb-1.5 border-b border-paper-border text-[10px] font-mono">
+            <span class="font-bold text-ink-pure">[04] FOOTWEAR</span>
+            <button onclick="toggleSlotLock('shoes')" id="lock-shoes" class="p-1 text-ink-muted hover:text-accent-terracotta">
+              <i data-lucide="unlock" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+          <div id="reel-box-shoes" class="h-44 sm:h-52 my-2 bg-paper-bone border border-paper-border flex flex-col items-center justify-center p-2 text-center relative overflow-hidden"></div>
+          <div class="border-t border-paper-border pt-1">
+            <p id="label-shoes" class="font-serif font-bold text-xs text-ink-pure truncate">No Footwear Uploaded</p>
+            <p id="desc-shoes" class="font-mono text-[9px] text-ink-muted truncate">Awaiting first piece</p>
+          </div>
+        </div>
+
+        <!-- SLOT 5: LIP & BEAUTY ACCENT -->
+        <div class="polaroid-frame p-3 relative flex flex-col justify-between border border-paper-border col-span-2 sm:col-span-1">
+          <div class="washi-tape"></div>
+          <div class="flex items-center justify-between pb-1.5 border-b border-paper-border text-[10px] font-mono">
+            <span class="font-bold text-ink-pure">[05] LIP & BEAUTY</span>
+            <button onclick="toggleSlotLock('beauty')" id="lock-beauty" class="p-1 text-ink-muted hover:text-accent-terracotta">
+              <i data-lucide="unlock" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+          <div id="reel-box-beauty" class="h-44 sm:h-52 my-2 bg-paper-bone border border-paper-border flex flex-col items-center justify-center p-2 text-center relative overflow-hidden"></div>
+          <div class="border-t border-paper-border pt-1">
+            <p id="label-beauty" class="font-serif font-bold text-xs text-ink-pure truncate">No Lip Formula</p>
+            <p id="desc-beauty" class="font-mono text-[9px] text-ink-muted truncate">Awaiting first formula</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Action Buttons Row -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+        <div class="w-full sm:w-auto flex items-center justify-between sm:justify-start gap-2">
+          <div class="editorial-stamp px-2 py-0.5 text-accent-espresso bg-paper-cream font-bold text-[9px]">
+            EDITORS CUT ACTIVE
+          </div>
+          <button onclick="syncToMirror()" class="px-3 py-1 bg-paper-card border border-paper-border hover:bg-paper-cream font-mono text-[10px] text-ink-pure font-bold flex items-center gap-1">
+            <i data-lucide="layers" class="w-3 h-3"></i>
+            <span>View In Mirror &rarr;</span>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <button onclick="generateRandomCut()" class="flex-1 sm:flex-none px-6 py-3.5 bg-ink-pure hover:bg-ink-charcoal text-paper-bone font-mono text-xs font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 active:scale-95 shadow-sm">
+            <i data-lucide="shuffle" class="w-4 h-4"></i>
+            <span>Spin Reels</span>
+          </button>
+          <button onclick="bookmarkActiveCut()" class="px-4 py-3.5 bg-paper-card hover:bg-paper-cream border border-paper-border text-ink-charcoal font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+            <i data-lucide="bookmark" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">Save</span>
+          </button>
+          <button onclick="openScheduleModal()" class="px-4 py-3.5 bg-paper-card hover:bg-paper-cream border border-paper-border text-ink-charcoal font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+            <i data-lucide="calendar" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">Agenda</span>
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- VIEW 2: DIGITAL FLAT-LAY MIRROR ("FITTING ROOM") -->
+    <section id="view-mirror" class="view-pane hidden space-y-5">
+      
+      <div class="flex items-center justify-between pb-2 border-b border-paper-border">
+        <div>
+          <span class="text-[9px] font-mono tracking-widest text-accent-terracotta uppercase font-bold">DIGITAL FITTING ROOM</span>
+          <h2 class="text-xl sm:text-2xl font-serif font-black text-ink-pure uppercase">Look Mirror</h2>
+        </div>
+        <div class="flex items-center gap-1.5 font-mono text-xs">
+          <button onclick="generateRandomCut(); syncToMirror();" class="px-3 py-1.5 bg-ink-pure text-paper-bone text-[10px] font-bold uppercase flex items-center gap-1">
+            <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+            <span>Shuffle Fit</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mirror Layout: Vertical Flat-Lay Stack + Glam / Bag Sidecards -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-5">
+        
+        <!-- Left / Center: Anatomical Stack -->
+        <div class="md:col-span-8 bg-paper-card border border-paper-border p-4 sm:p-6 polaroid-frame relative flex flex-col items-center">
+          <div class="washi-tape"></div>
+
+          <div class="w-full max-w-sm flex flex-col items-center space-y-2.5 my-2">
+            
+            <!-- LAYER 1: HIJAB & HEADWEAR -->
+            <div onclick="cycleSlotPiece('hijab')" class="mirror-layer w-40 sm:w-48 h-32 bg-paper-bone border border-dashed border-paper-border relative overflow-hidden rounded-t-3xl shadow-sm flex flex-col items-center justify-center cursor-pointer group" title="Click to cycle Hijab">
+              <div id="mirror-slot-hijab" class="w-full h-full flex items-center justify-center">
+                <span class="text-[9px] font-mono text-ink-muted uppercase">[EMPTY HIJAB]</span>
+              </div>
+              <span class="absolute bottom-1 bg-ink-pure/80 text-paper-bone text-[8px] font-mono px-1.5 py-0.5 uppercase tracking-wider pointer-events-none">
+                01 • HIJAB FRAME
+              </span>
+            </div>
+
+            <!-- LAYER 2: CORE UPPER (KURTI / TOP / SHIRT) -->
+            <div onclick="cycleSlotPiece('top')" class="mirror-layer w-56 sm:w-64 h-52 bg-paper-bone border border-dashed border-paper-border relative overflow-hidden shadow-sm flex flex-col items-center justify-center cursor-pointer group" title="Click to cycle Upper">
+              <div id="mirror-slot-top" class="w-full h-full flex items-center justify-center">
+                <span class="text-[9px] font-mono text-ink-muted uppercase">[EMPTY TOP / KURTI]</span>
+              </div>
+              <span class="absolute bottom-1 bg-ink-pure/80 text-paper-bone text-[8px] font-mono px-1.5 py-0.5 uppercase tracking-wider pointer-events-none">
+                02 • UPPER SILHOUETTE
+              </span>
+            </div>
+
+            <!-- LAYER 3: CORE LOWER (SHALWAR / PANTS / SKIRT) -->
+            <div onclick="cycleSlotPiece('bottom')" class="mirror-layer w-48 sm:w-56 h-48 bg-paper-bone border border-dashed border-paper-border relative overflow-hidden shadow-sm flex flex-col items-center justify-center cursor-pointer group" title="Click to cycle Bottom">
+              <div id="mirror-slot-bottom" class="w-full h-full flex items-center justify-center">
+                <span class="text-[9px] font-mono text-ink-muted uppercase">[EMPTY BOTTOM]</span>
+              </div>
+              <span class="absolute bottom-1 bg-ink-pure/80 text-paper-bone text-[8px] font-mono px-1.5 py-0.5 uppercase tracking-wider pointer-events-none">
+                03 • LOWER DRAPE
+              </span>
+            </div>
+
+            <!-- LAYER 4: FOOTWEAR (KHUSSAS / SNEAKERS) -->
+            <div onclick="cycleSlotPiece('shoes')" class="mirror-layer w-40 sm:w-48 h-24 bg-paper-bone border border-dashed border-paper-border relative overflow-hidden rounded-b-2xl shadow-sm flex flex-col items-center justify-center cursor-pointer group" title="Click to cycle Shoes">
+              <div id="mirror-slot-shoes" class="w-full h-full flex items-center justify-center">
+                <span class="text-[9px] font-mono text-ink-muted uppercase">[EMPTY FOOTWEAR]</span>
+              </div>
+              <span class="absolute bottom-1 bg-ink-pure/80 text-paper-bone text-[8px] font-mono px-1.5 py-0.5 uppercase tracking-wider pointer-events-none">
+                04 • FOOTWEAR
+              </span>
+            </div>
+
+          </div>
+
+          <div class="mt-2 text-center font-mono text-[10px] text-ink-muted">
+            Tap any section of the mirror stack to cycle through archived pieces.
+          </div>
+        </div>
+
+        <!-- Right Side: Accents & Beauty Breakdown -->
+        <div class="md:col-span-4 space-y-3.5 font-mono text-xs">
+          
+          <!-- Lip & Beauty Card -->
+          <div class="bg-paper-card border border-paper-border p-4 polaroid-frame relative">
+            <span class="text-[9px] font-mono text-accent-terracotta uppercase font-bold block mb-1">
+              [BEAUTY_FORMULA]
+            </span>
+            <h3 class="font-serif font-black text-sm uppercase text-ink-pure" id="mirror-lip-title">
+              No Lip Selected
+            </h3>
+            <p class="font-serif italic text-xs text-ink-muted mt-1" id="mirror-lip-notes">
+              Cycle lip combos to complete your look palette.
+            </p>
+            <div id="mirror-lip-swatch" class="h-8 mt-2 border border-paper-border flex items-center justify-center text-[10px] font-mono uppercase bg-paper-cream">
+              Neutral Swatch
+            </div>
+            <button onclick="cycleSlotPiece('beauty')" class="mt-2.5 w-full py-1.5 bg-paper-cream hover:bg-paper-deep text-ink-pure text-[10px] font-bold uppercase border border-paper-border">
+              Cycle Lip Combo &rarr;
+            </button>
+          </div>
+
+          <!-- Color & Drape Dialogue -->
+          <div class="bg-paper-card border border-paper-border p-4 polaroid-frame relative">
+            <span class="text-[9px] font-mono text-accent-olive uppercase font-bold block mb-1">
+              [HARMONY_REPORT]
+            </span>
+            <div id="mirror-harmony-report" class="font-serif text-xs text-ink-charcoal leading-relaxed space-y-1.5 pt-1">
+              Upload and arrange pieces in the mirror to inspect textural and color interactions.
+            </div>
+          </div>
+
+          <!-- Action: Save Snapshot -->
+          <button onclick="bookmarkActiveCut()" class="w-full py-3 bg-ink-pure text-paper-bone font-mono text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+            <i data-lucide="bookmark" class="w-4 h-4"></i>
+            <span>Archive this Mirror Fit</span>
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- VIEW 3: WARDROBE CATALOG -->
+    <section id="view-wardrobe" class="view-pane hidden space-y-5">
+      
+      <div class="flex items-center justify-between pb-2 border-b border-paper-border">
+        <div>
+          <span class="text-[9px] font-mono tracking-widest text-accent-terracotta uppercase font-bold">WARDROBE REGISTRY</span>
+          <h2 class="text-xl sm:text-2xl font-serif font-black text-ink-pure uppercase">Catalog Index</h2>
+        </div>
+        <div class="flex items-center gap-2 font-mono text-xs">
+          <span id="inventory-count-badge" class="px-2.5 py-1 bg-paper-cream border border-paper-border text-ink-charcoal">0 items</span>
+        </div>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none font-mono text-xs">
+        <button onclick="filterCatalog('all')" class="cat-pill active px-3 py-1.5 border border-ink-pure bg-ink-pure text-paper-bone font-bold whitespace-nowrap text-[11px]">
+          All Items
+        </button>
+        <button onclick="filterCatalog('top')" class="cat-pill px-3 py-1.5 border border-paper-border bg-paper-card text-ink-charcoal whitespace-nowrap text-[11px]">
+          Tops & Kurtis
+        </button>
+        <button onclick="filterCatalog('bottom')" class="cat-pill px-3 py-1.5 border border-paper-border bg-paper-card text-ink-charcoal whitespace-nowrap text-[11px]">
+          Shalwars & Pants
+        </button>
+        <button onclick="filterCatalog('hijab')" class="cat-pill px-3 py-1.5 border border-paper-border bg-paper-card text-ink-charcoal whitespace-nowrap text-[11px]">
+          Hijabs & Headwear
+        </button>
+        <button onclick="filterCatalog('shoes')" class="cat-pill px-3 py-1.5 border border-paper-border bg-paper-card text-ink-charcoal whitespace-nowrap text-[11px]">
+          Footwear
+        </button>
+        <button onclick="filterCatalog('beauty')" class="cat-pill px-3 py-1.5 border border-paper-border bg-paper-card text-ink-charcoal whitespace-nowrap text-[11px]">
+          Lip Combos
+        </button>
+      </div>
+
+      <!-- Wardrobe Grid -->
+      <div id="catalog-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+        <!-- Injected Dynamically -->
+      </div>
+
+    </section>
+
+    <!-- VIEW 4: WEEKLY AGENDA PLANNER -->
+    <section id="view-planner" class="view-pane hidden space-y-5">
+      
+      <div class="flex items-center justify-between pb-2 border-b border-paper-border">
+        <div>
+          <span class="text-[9px] font-mono tracking-widest text-accent-terracotta uppercase font-bold">WEEKLY SCHEDULE</span>
+          <h2 class="text-xl sm:text-2xl font-serif font-black text-ink-pure uppercase">Outfit Agenda</h2>
+        </div>
+        <span class="text-xs font-mono text-ink-muted">Mon — Sun</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3" id="agenda-calendar-grid">
+        <!-- Injected -->
+      </div>
+
+    </section>
+
+    <!-- VIEW 5: SAVED LOOKBOOK -->
+    <section id="view-saved" class="view-pane hidden space-y-5">
+      
+      <div class="flex items-center justify-between pb-2 border-b border-paper-border">
+        <div>
+          <span class="text-[9px] font-mono tracking-widest text-accent-terracotta uppercase font-bold">ARCHIVAL LOOKS</span>
+          <h2 class="text-xl sm:text-2xl font-serif font-black text-ink-pure uppercase">Saved Cuts</h2>
+        </div>
+        <span id="saved-counter" class="text-xs font-mono text-ink-muted">0 Saved</span>
+      </div>
+
+      <div id="saved-cuts-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <!-- Injected -->
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- MODAL: UPLOAD PIECE (Direct Camera & Photo Library Fix) -->
+  <div id="modal-upload-sheet" class="fixed inset-0 bg-ink-pure/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+    <div class="bg-paper-bone border-t-2 sm:border-2 border-ink-pure w-full max-w-lg p-5 sm:p-7 max-h-[90vh] overflow-y-auto rounded-t-2xl sm:rounded-none relative shadow-2xl">
+      
+      <div class="flex items-center justify-between pb-3 border-b border-paper-border">
+        <div>
+          <span class="text-[9px] font-mono uppercase text-accent-terracotta tracking-widest font-bold">[INVENTORY_ENTRY]</span>
+          <h3 class="text-lg font-serif font-black text-ink-pure uppercase">Archive New Piece</h3>
+        </div>
+        <button onclick="closeUploadSheet()" class="p-1 text-ink-muted hover:text-ink-pure">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="upload-form" onsubmit="handleItemCommit(event)" class="mt-4 space-y-3.5 font-mono text-xs">
+        
+        <!-- iOS Photo Pickers: Dual triggers (No forced capture attribute) -->
+        <div>
+          <label class="block uppercase font-bold text-ink-charcoal mb-1 text-[10px]">Add Photo</label>
+          
+          <div class="border border-dashed border-ink-charcoal/40 bg-paper-cream p-4 text-center relative hover:bg-paper-deep/30 transition-colors">
+            
+            <div id="snap-preview-box" class="hidden mb-2">
+              <img id="snap-preview-img" src="" alt="Captured piece" class="h-40 mx-auto object-cover border border-paper-border">
+            </div>
+
+            <!-- Two Clear Mobile Triggers -->
+            <div id="snap-actions-row" class="flex flex-col sm:flex-row items-center justify-center gap-2">
+              <label for="universal-file-input" class="w-full sm:w-auto px-4 py-2.5 bg-paper-card border border-paper-border text-ink-charcoal font-bold text-xs uppercase cursor-pointer hover:bg-paper-bone flex items-center justify-center gap-1.5 shadow-sm">
+                <i data-lucide="image" class="w-4 h-4 text-accent-terracotta"></i>
+                <span>Choose from Library</span>
+              </label>
+              
+              <label for="camera-capture-input" class="w-full sm:w-auto px-4 py-2.5 bg-ink-pure text-paper-bone font-bold text-xs uppercase cursor-pointer hover:bg-ink-charcoal flex items-center justify-center gap-1.5 shadow-sm">
+                <i data-lucide="camera" class="w-4 h-4"></i>
+                <span>Take Fresh Photo</span>
+              </label>
+            </div>
+
+            <!-- Library Input: Accepts all images, no capture restriction -->
+            <input type="file" id="universal-file-input" accept="image/*" class="sr-only" onchange="previewCapturedImage(event)">
+            <!-- Camera Direct Input -->
+            <input type="file" id="camera-capture-input" accept="image/*" capture="environment" class="sr-only" onchange="previewCapturedImage(event)">
+          </div>
+        </div>
+
+        <!-- Name & Category -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div>
+            <label class="block uppercase font-bold text-ink-charcoal mb-0.5 text-[10px]">Item Description</label>
+            <input type="text" id="piece-name" required placeholder="e.g. Sage Linen Boxy Kurti" class="w-full bg-white border border-paper-border p-2 text-xs focus:outline-none">
+          </div>
+          <div>
+            <label class="block uppercase font-bold text-ink-charcoal mb-0.5 text-[10px]">Wardrobe Slot</label>
+            <select id="piece-category" required class="w-full bg-white border border-paper-border p-2 text-xs focus:outline-none">
+              <option value="top">Top / Kurti / Shirt</option>
+              <option value="bottom">Bottom / Shalwar / Trouser</option>
+              <option value="hijab">Hijab / Headwear Wrap</option>
+              <option value="shoes">Footwear / Khussa / Loafer</option>
+              <option value="beauty">Lip Combo / Beauty Accent</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Vibe & Palette -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <div>
+            <label class="block uppercase font-bold text-ink-charcoal mb-0.5 text-[10px]">Rotation Vibe</label>
+            <select id="piece-vibe" class="w-full bg-white border border-paper-border p-2 text-xs focus:outline-none">
+              <option value="uni">Uni Casual</option>
+              <option value="meetup">Cafe & Meetup</option>
+              <option value="eastern">Eastern Minimal</option>
+            </select>
+          </div>
+          <div>
+            <label class="block uppercase font-bold text-ink-charcoal mb-0.5 text-[10px]">Textile / Fabric</label>
+            <input type="text" id="piece-fabric" placeholder="e.g. Lawn, Modal, Denim" class="w-full bg-white border border-paper-border p-2 text-xs focus:outline-none">
+          </div>
+          <div>
+            <label class="block uppercase font-bold text-ink-charcoal mb-0.5 text-[10px]">Color Tone</label>
+            <input type="text" id="piece-color" placeholder="e.g. Raw Bone, Mocha" class="w-full bg-white border border-paper-border p-2 text-xs focus:outline-none">
+          </div>
+        </div>
+
+        <!-- Notes / Lip recipe -->
+        <div>
+          <label class="block uppercase font-bold text-ink-charcoal mb-0.5 text-[10px]">Notes / Lip Formula Details</label>
+          <input type="text" id="piece-notes" placeholder="e.g. Brown lip liner + sheer warm gloss" class="w-full bg-white border border-paper-border p-2 text-xs focus:outline-none">
+        </div>
+
+        <button type="submit" id="btn-submit-piece" class="w-full py-3 bg-ink-pure text-paper-bone font-mono text-xs font-bold uppercase tracking-widest hover:bg-ink-charcoal transition-all">
+          Archive Piece to Closet &rarr;
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: SUPABASE CLOUD VAULT SETTINGS -->
+  <div id="modal-cloud-vault" class="fixed inset-0 bg-ink-pure/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-paper-bone border-2 border-ink-pure w-full max-w-md p-5 sm:p-6 relative shadow-2xl font-mono text-xs">
+      
+      <div class="flex items-center justify-between pb-2 border-b border-paper-border">
+        <div>
+          <span class="text-[9px] text-accent-terracotta uppercase font-bold">[CLOUD_SYNC_CONFIG]</span>
+          <h3 class="font-serif font-black uppercase text-base text-ink-pure">Supabase Vault Sync</h3>
+        </div>
+        <button onclick="closeCloudModal()" class="text-ink-muted hover:text-ink-pure">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="mt-3.5 space-y-3">
+        <p class="font-serif text-xs text-ink-charcoal leading-relaxed">
+          Connect your free Supabase project to permanently store clothing pictures and access your wardrobe from both your phone and laptop.
+        </p>
+
+        <div>
+          <label class="block uppercase font-bold text-[10px] mb-1">Supabase Project URL</label>
+          <input type="text" id="supabase-url" placeholder="https://xyzcompany.supabase.co" class="w-full bg-white border border-paper-border p-2 text-xs focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block uppercase font-bold text-[10px] mb-1">Supabase Anon Key</label>
+          <input type="password" id="supabase-anon-key" placeholder="eyJhbGciOi..." class="w-full bg-white border border-paper-border p-2 text-xs focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block uppercase font-bold text-[10px] mb-1">Storage Bucket Name</label>
+          <input type="text" id="supabase-bucket" value="closet-photos" placeholder="closet-photos" class="w-full bg-white border border-paper-border p-2 text-xs focus:outline-none">
+        </div>
+
+        <div class="pt-2 flex items-center justify-between gap-2">
+          <button onclick="saveSupabaseConfig()" class="flex-1 py-2.5 bg-ink-pure text-paper-bone font-mono text-xs font-bold uppercase tracking-wider">
+            Connect Cloud Vault
+          </button>
+          <button onclick="disconnectCloud()" class="px-3 py-2.5 bg-paper-cream border border-paper-border text-ink-charcoal text-[10px] font-bold uppercase">
+            Reset to Local
+          </button>
+        </div>
+
+        <div class="p-2.5 bg-paper-cream border border-paper-border text-[10px] text-ink-muted">
+          <strong>Tip:</strong> If left empty, all items are safely saved locally on your phone.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD TO AGENDA -->
+  <div id="modal-agenda-sheet" class="fixed inset-0 bg-ink-pure/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-paper-bone border-2 border-ink-pure w-full max-w-sm p-5 relative shadow-2xl font-mono text-xs">
+      <div class="flex items-center justify-between pb-2 border-b border-paper-border">
+        <h3 class="font-serif font-black uppercase text-base text-ink-pure">Assign to Day</h3>
+        <button onclick="closeAgendaModal()" class="text-ink-muted hover:text-ink-pure">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="mt-3 space-y-3">
+        <div>
+          <label class="block uppercase font-bold text-[10px] mb-1">Select Day</label>
+          <select id="agenda-target-day" class="w-full bg-white border border-paper-border p-2 text-xs">
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday (Jummah)</option>
+            <option value="Saturday">Saturday</option>
+            <option value="Sunday">Sunday</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block uppercase font-bold text-[10px] mb-1">Itinerary Note</label>
+          <input type="text" id="agenda-day-note" placeholder="e.g. 10 AM Lecture + Chai with Sana" class="w-full bg-white border border-paper-border p-2 text-xs">
+        </div>
+
+        <button onclick="commitAgendaEntry()" class="w-full py-2.5 bg-ink-pure text-paper-bone font-mono text-xs font-bold uppercase tracking-widest">
+          Confirm Agenda Entry &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE BOTTOM NAVIGATION BAR -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-paper-bone/95 backdrop-blur-md border-t border-paper-border z-40 px-2 py-1.5 flex items-center justify-around font-mono text-[9px] uppercase tracking-wider">
+    <button onclick="switchTab('generator')" id="nav-btn-generator" class="nav-item active flex flex-col items-center py-1 px-2 text-ink-pure font-bold">
+      <i data-lucide="shuffle" class="w-4 h-4 mb-0.5"></i>
+      <span>Reels</span>
+    </button>
+    <button onclick="switchTab('mirror')" id="nav-btn-mirror" class="nav-item flex flex-col items-center py-1 px-2 text-ink-muted">
+      <i data-lucide="layers" class="w-4 h-4 mb-0.5"></i>
+      <span>Mirror</span>
+    </button>
+    
+    <!-- Quick Snap Center Button -->
+    <button onclick="openUploadSheet()" class="-mt-4 p-3 bg-ink-pure text-paper-bone rounded-full border-2 border-paper-bone shadow-lg active:scale-95 transition-transform" title="Snap Piece">
+      <i data-lucide="plus" class="w-5 h-5"></i>
+    </button>
+
+    <button onclick="switchTab('wardrobe')" id="nav-btn-wardrobe" class="nav-item flex flex-col items-center py-1 px-2 text-ink-muted">
+      <i data-lucide="shirt" class="w-4 h-4 mb-0.5"></i>
+      <span>Closet</span>
+    </button>
+    <button onclick="switchTab('planner')" id="nav-btn-planner" class="nav-item flex flex-col items-center py-1 px-2 text-ink-muted">
+      <i data-lucide="calendar" class="w-4 h-4 mb-0.5"></i>
+      <span>Agenda</span>
+    </button>
+    <button onclick="switchTab('saved')" id="nav-btn-saved" class="nav-item flex flex-col items-center py-1 px-2 text-ink-muted">
+      <i data-lucide="bookmark" class="w-4 h-4 mb-0.5"></i>
+      <span>Saved</span>
+    </button>
+  </nav>
+
+  <!-- Editorial Toast Container -->
+  <div id="toast-bin" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <script>
+    let appState = {
+      wardrobe: [],
+      vibeFilter: 'all',
+      catalogFilter: 'all',
+      activeCut: {
+        top: null,
+        bottom: null,
+        hijab: null,
+        shoes: null,
+        beauty: null
+      },
+      locks: {
+        top: false,
+        bottom: false,
+        hijab: false,
+        shoes: false,
+        beauty: false
+      },
+      agenda: {
+        Monday: null,
+        Tuesday: null,
+        Wednesday: null,
+        Thursday: null,
+        Friday: null,
+        Saturday: null,
+        Sunday: null
+      },
+      savedLooks: [],
+      supabaseConfig: {
+        url: '',
+        key: '',
+        bucket: 'closet-photos'
+      }
+    };
+
+    let supabaseClient = null;
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      loadStorage();
+      initSupabase();
+      renderAllViews();
+      lucide.createIcons();
+    });
+
+    function loadStorage() {
+      try {
+        const storedWardrobe = localStorage.getItem('mb_wardrobe_items');
+        if (storedWardrobe) appState.wardrobe = JSON.parse(storedWardrobe);
+
+        const storedAgenda = localStorage.getItem('mb_agenda');
+        if (storedAgenda) appState.agenda = JSON.parse(storedAgenda);
+
+        const storedSaved = localStorage.getItem('mb_saved_looks');
+        if (storedSaved) appState.savedLooks = JSON.parse(storedSaved);
+
+        const storedSb = localStorage.getItem('mb_supabase_config');
+        if (storedSb) {
+          appState.supabaseConfig = JSON.parse(storedSb);
+          document.getElementById('supabase-url').value = appState.supabaseConfig.url || '';
+          document.getElementById('supabase-anon-key').value = appState.supabaseConfig.key || '';
+          document.getElementById('supabase-bucket').value = appState.supabaseConfig.bucket || 'closet-photos';
+        }
+      } catch (err) {
+        console.warn('Storage read warning:', err);
+      }
+    }
+
+    /* Supabase Cloud Vault Handlers */
+    function initSupabase() {
+      const { url, key } = appState.supabaseConfig;
+      if (url && key && window.supabase) {
+        try {
+          supabaseClient = window.supabase.createClient(url, key);
+          document.getElementById('sync-dot').className = 'w-1.5 h-1.5 rounded-full bg-emerald-500';
+          document.getElementById('sync-text').textContent = 'Cloud Synced';
+          pullFromSupabase();
+        } catch (e) {
+          console.warn('Supabase init failed:', e);
+        }
+      } else {
+        document.getElementById('sync-dot').className = 'w-1.5 h-1.5 rounded-full bg-amber-500';
+        document.getElementById('sync-text').textContent = 'Local';
+      }
+    }
+
+    function openCloudModal() {
+      document.getElementById('modal-cloud-vault').classList.remove('hidden');
+    }
+    function closeCloudModal() {
+      document.getElementById('modal-cloud-vault').classList.add('hidden');
+    }
+
+    function saveSupabaseConfig() {
+      const url = document.getElementById('supabase-url').value.trim();
+      const key = document.getElementById('supabase-anon-key').value.trim();
+      const bucket = document.getElementById('supabase-bucket').value.trim() || 'closet-photos';
+
+      appState.supabaseConfig = { url, key, bucket };
+      localStorage.setItem('mb_supabase_config', JSON.stringify(appState.supabaseConfig));
+      initSupabase();
+      closeCloudModal();
+      showEditorialToast('Supabase Cloud Vault connected.', 'CLOUD');
+    }
+
+    function disconnectCloud() {
+      appState.supabaseConfig = { url: '', key: '', bucket: 'closet-photos' };
+      localStorage.removeItem('mb_supabase_config');
+      supabaseClient = null;
+      document.getElementById('supabase-url').value = '';
+      document.getElementById('supabase-anon-key').value = '';
+      document.getElementById('sync-dot').className = 'w-1.5 h-1.5 rounded-full bg-amber-500';
+      document.getElementById('sync-text').textContent = 'Local';
+      closeCloudModal();
+      showEditorialToast('Reset to local offline mode.');
+    }
+
+    async function pullFromSupabase() {
+      if (!supabaseClient) return;
+      try {
+        const { data, error } = await supabaseClient.from('closet_items').select('*');
+        if (!error && data && data.length > 0) {
+          appState.wardrobe = data;
+          localStorage.setItem('mb_wardrobe_items', JSON.stringify(appState.wardrobe));
+          renderAllViews();
+        }
+      } catch (err) {
+        console.warn('Supabase fetch failed:', err);
+      }
+    }
+
+    async function pushItemToSupabase(item) {
+      if (!supabaseClient) return;
+      try {
+        await supabaseClient.from('closet_items').upsert([item]);
+      } catch (err) {
+        console.warn('Supabase sync warning:', err);
+      }
+    }
+
+    async function deleteItemFromSupabase(id) {
+      if (!supabaseClient) return;
+      try {
+        await supabaseClient.from('closet_items').delete().eq('id', id);
+      } catch (err) {
+        console.warn('Supabase delete warning:', err);
+      }
+    }
+
+    function saveWardrobe() {
+      localStorage.setItem('mb_wardrobe_items', JSON.stringify(appState.wardrobe));
+      updateCounters();
+      renderCatalogGrid();
+    }
+
+    function saveAgenda() {
+      localStorage.setItem('mb_agenda', JSON.stringify(appState.agenda));
+      renderAgendaCalendar();
+    }
+
+    function saveSavedLooks() {
+      localStorage.setItem('mb_saved_looks', JSON.stringify(appState.savedLooks));
+      renderSavedLooksGrid();
+    }
+
+    function showEditorialToast(msg, tag = 'CONFIRMED') {
+      const bin = document.getElementById('toast-bin');
+      const toast = document.createElement('div');
+      toast.className = 'bg-ink-pure text-paper-bone border border-paper-border px-3.5 py-2 font-mono text-xs flex items-center gap-2 shadow-2xl transition-all duration-300 opacity-0 translate-y-2 pointer-events-auto';
+      toast.innerHTML = `
+        <span class="text-[9px] text-accent-terracotta font-bold">[${tag}]</span>
+        <span>${msg}</span>
+      `;
+      bin.appendChild(toast);
+
+      setTimeout(() => toast.classList.remove('opacity-0', 'translate-y-2'), 20);
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.view-pane').forEach(p => p.classList.add('hidden'));
+      document.querySelectorAll('.nav-item').forEach(b => {
+        b.classList.remove('active', 'text-ink-pure', 'font-bold');
+        b.classList.add('text-ink-muted');
+      });
+
+      const pane = document.getElementById(`view-${tabId}`);
+      const btn = document.getElementById(`nav-btn-${tabId}`);
+      if (pane) pane.classList.remove('hidden');
+      if (btn) {
+        btn.classList.add('active', 'text-ink-pure', 'font-bold');
+        btn.classList.remove('text-ink-muted');
+      }
+
+      if (tabId === 'mirror') {
+        syncToMirror();
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Image Capture and Compression
+    let uploadedBase64 = null;
+    function previewCapturedImage(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxDim = 800;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > maxDim) {
+              height *= maxDim / width;
+              width = maxDim;
+            }
+          } else {
+            if (height > maxDim) {
+              width *= maxDim / height;
+              height = maxDim;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          uploadedBase64 = canvas.toDataURL('image/jpeg', 0.82);
+          document.getElementById('snap-preview-img').src = uploadedBase64;
+          document.getElementById('snap-preview-box').classList.remove('hidden');
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function handleItemCommit(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('btn-submit-piece');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Archiving...';
+
+      const name = document.getElementById('piece-name').value.trim();
+      const category = document.getElementById('piece-category').value;
+      const vibe = document.getElementById('piece-vibe').value;
+      const fabric = document.getElementById('piece-fabric').value.trim() || 'Textured';
+      const color = document.getElementById('piece-color').value.trim() || 'Neutral';
+      const notes = document.getElementById('piece-notes').value.trim();
+
+      const newItem = {
+        id: 'item_' + Date.now(),
+        name,
+        category,
+        vibe,
+        fabric,
+        color,
+        notes,
+        ref: 'REF_' + Math.floor(100 + Math.random() * 899),
+        img: uploadedBase64 || null
+      };
+
+      appState.wardrobe.unshift(newItem);
+      saveWardrobe();
+
+      // Push to Supabase if active
+      if (supabaseClient) {
+        pushItemToSupabase(newItem);
+      }
+
+      if (!appState.activeCut[category]) {
+        appState.activeCut[category] = newItem;
+        renderSlot(category, newItem);
+      }
+
+      document.getElementById('upload-form').reset();
+      uploadedBase64 = null;
+      document.getElementById('snap-preview-box').classList.add('hidden');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Archive Piece to Closet →';
+
+      closeUploadSheet();
+      showEditorialToast(`${name} added to archive.`);
+    }
+
+    function openUploadSheet() {
+      document.getElementById('modal-upload-sheet').classList.remove('hidden');
+    }
+    function closeUploadSheet() {
+      document.getElementById('modal-upload-sheet').classList.add('hidden');
+    }
+
+    // Slot Reels Logic
+    function toggleSlotLock(slot) {
+      appState.locks[slot] = !appState.locks[slot];
+      const btn = document.getElementById(`lock-${slot}`);
+      if (appState.locks[slot]) {
+        btn.classList.add('text-accent-terracotta');
+        btn.innerHTML = `<i data-lucide="lock" class="w-3.5 h-3.5"></i>`;
+        showEditorialToast(`[${slot.toUpperCase()}] locked in position.`, 'LOCKED');
+      } else {
+        btn.classList.remove('text-accent-terracotta');
+        btn.innerHTML = `<i data-lucide="unlock" class="w-3.5 h-3.5"></i>`;
+      }
+      lucide.createIcons();
+    }
+
+    function setVibeFilter(vibe) {
+      appState.vibeFilter = vibe;
+      document.querySelectorAll('.vibe-pill').forEach(b => {
+        b.classList.remove('active', 'bg-ink-pure', 'text-paper-bone', 'font-bold');
+        b.classList.add('bg-paper-card', 'text-ink-charcoal');
+      });
+      const activeBtn = document.getElementById(`vibe-${vibe}`);
+      if (activeBtn) {
+        activeBtn.classList.add('active', 'bg-ink-pure', 'text-paper-bone', 'font-bold');
+        activeBtn.classList.remove('bg-paper-card', 'text-ink-charcoal');
+      }
+      generateRandomCut();
+    }
+
+    function getItemsForSlot(category) {
+      let pool = appState.wardrobe.filter(i => i.category === category);
+      if (appState.vibeFilter !== 'all') {
+        const filtered = pool.filter(i => i.vibe === appState.vibeFilter);
+        if (filtered.length > 0) pool = filtered;
+      }
+      return pool;
+    }
+
+    function generateRandomCut() {
+      const slots = ['top', 'bottom', 'hijab', 'shoes', 'beauty'];
+
+      slots.forEach(slot => {
+        if (!appState.locks[slot]) {
+          const container = document.getElementById(`reel-box-${slot}`);
+          if (container) container.classList.add('reel-blur');
+
+          setTimeout(() => {
+            const items = getItemsForSlot(slot);
+            if (items.length > 0) {
+              const picked = items[Math.floor(Math.random() * items.length)];
+              appState.activeCut[slot] = picked;
+              renderSlot(slot, picked);
+            } else {
+              appState.activeCut[slot] = null;
+              renderSlot(slot, null);
+            }
+            if (container) container.classList.remove('reel-blur');
+          }, 180);
+        }
+      });
+    }
+
+    function renderSlot(slot, item) {
+      const box = document.getElementById(`reel-box-${slot}`);
+      const label = document.getElementById(`label-${slot}`);
+      const desc = document.getElementById(`desc-${slot}`);
+      if (!box) return;
+
+      if (!item) {
+        box.innerHTML = `
+          <div class="flex flex-col items-center justify-center text-ink-faded p-2 cursor-pointer" onclick="openUploadSheet()">
+            <i data-lucide="plus-circle" class="w-6 h-6 stroke-[1.2] mb-1"></i>
+            <span class="text-[9px] font-mono tracking-wider uppercase">[TAP TO SNAP]</span>
+          </div>
+        `;
+        if (label) label.textContent = 'Empty Slot';
+        if (desc) desc.textContent = 'Upload piece to activate';
+      } else {
+        if (item.img) {
+          box.innerHTML = `<img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover">`;
+        } else {
+          box.innerHTML = `
+            <div class="h-full w-full flex flex-col justify-center items-center bg-paper-cream p-2 text-center font-mono">
+              <span class="text-[10px] font-bold uppercase text-ink-pure">${item.name}</span>
+              <span class="text-[9px] text-ink-muted mt-1">${item.fabric} • ${item.color}</span>
+            </div>
+          `;
+        }
+        if (label) label.textContent = item.name;
+        if (desc) desc.textContent = `${item.fabric} // ${item.color}`;
+      }
+      lucide.createIcons();
+    }
+
+    /* FITTING ROOM MIRROR LOGIC */
+    function syncToMirror() {
+      const slots = ['hijab', 'top', 'bottom', 'shoes'];
+
+      slots.forEach(slot => {
+        const item = appState.activeCut[slot];
+        const mirrorEl = document.getElementById(`mirror-slot-${slot}`);
+        if (!mirrorEl) return;
+
+        if (item && item.img) {
+          mirrorEl.innerHTML = `<img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover">`;
+        } else if (item) {
+          mirrorEl.innerHTML = `
+            <div class="w-full h-full flex flex-col items-center justify-center bg-paper-cream p-2 text-center font-mono">
+              <span class="text-[10px] font-bold uppercase">${item.name}</span>
+              <span class="text-[8px] text-ink-muted">${item.fabric} • ${item.color}</span>
+            </div>
+          `;
+        } else {
+          mirrorEl.innerHTML = `<span class="text-[9px] font-mono text-ink-muted uppercase">[EMPTY ${slot.toUpperCase()}]</span>`;
+        }
+      });
+
+      // Mirror Beauty Details
+      const beauty = appState.activeCut.beauty;
+      const lipTitle = document.getElementById('mirror-lip-title');
+      const lipNotes = document.getElementById('mirror-lip-notes');
+      const lipSwatch = document.getElementById('mirror-lip-swatch');
+
+      if (beauty) {
+        lipTitle.textContent = beauty.name;
+        lipNotes.textContent = beauty.notes || `${beauty.fabric} • ${beauty.color}`;
+        lipSwatch.textContent = beauty.color || 'Formula Swatch';
+      } else {
+        lipTitle.textContent = 'No Lip Selected';
+        lipNotes.textContent = 'Cycle lip combos to complete your look palette.';
+        lipSwatch.textContent = 'Neutral Swatch';
+      }
+
+      // Update harmony assessment text
+      const report = document.getElementById('mirror-harmony-report');
+      const { top, hijab, bottom } = appState.activeCut;
+      if (top && hijab) {
+        report.innerHTML = `
+          <p><strong>[CONTRAST BALANCE]</strong> ${top.name} (${top.color}) creates intentional separation against ${hijab.name} (${hijab.color}) framing.</p>
+          <p><strong>[DRAPING]</strong> ${bottom ? bottom.name : 'Trousers'} balance upper volume for practical walking and university transit.</p>
+        `;
+      } else {
+        report.textContent = 'Upload and select both an upper piece and a hijab to generate silhouette and harmony assessments.';
+      }
+    }
+
+    function cycleSlotPiece(slot) {
+      const items = getItemsForSlot(slot);
+      if (items.length === 0) {
+        showEditorialToast(`No items archived for ${slot}. Tap + to snap one.`, 'EMPTY');
+        return;
+      }
+
+      const currentIndex = items.findIndex(i => i.id === appState.activeCut[slot]?.id);
+      const nextIndex = (currentIndex + 1) % items.length;
+      appState.activeCut[slot] = items[nextIndex];
+      renderSlot(slot, items[nextIndex]);
+      syncToMirror();
+      showEditorialToast(`Cycled ${items[nextIndex].name}.`);
+    }
+
+    function bookmarkActiveCut() {
+      const cut = {
+        id: 'cut_' + Date.now(),
+        date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }).toUpperCase(),
+        title: prompt('Title for this look:', 'Daily Lahore Rotation') || 'Archived Look',
+        items: { ...appState.activeCut }
+      };
+
+      appState.savedLooks.unshift(cut);
+      saveSavedLooks();
+      showEditorialToast('Look saved to lookbook.', 'ARCHIVED');
+    }
+
+    // Wardrobe Catalog Grid
+    function filterCatalog(category) {
+      appState.catalogFilter = category;
+      document.querySelectorAll('.cat-pill').forEach(b => {
+        b.classList.remove('active', 'bg-ink-pure', 'text-paper-bone', 'font-bold');
+        b.classList.add('bg-paper-card', 'text-ink-charcoal');
+      });
+      event.target.classList.add('active', 'bg-ink-pure', 'text-paper-bone', 'font-bold');
+      event.target.classList.remove('bg-paper-card', 'text-ink-charcoal');
+      renderCatalogGrid();
+    }
+
+    function renderCatalogGrid() {
+      const grid = document.getElementById('catalog-grid');
+      let items = appState.wardrobe;
+
+      if (appState.catalogFilter !== 'all') {
+        items = items.filter(i => i.category === appState.catalogFilter);
+      }
+
+      if (items.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-16 text-center border border-dashed border-paper-border bg-paper-cream p-6">
+            <span class="text-[10px] font-mono text-ink-muted uppercase tracking-widest block mb-2">[PRISTINE CANVAS]</span>
+            <p class="font-serif text-sm text-ink-pure font-bold">No pieces archived in this category yet.</p>
+            <p class="text-xs font-serif italic text-ink-muted mt-1">Tap the plus button below to snap or upload your first piece.</p>
+            <button onclick="openUploadSheet()" class="mt-4 px-4 py-2 bg-ink-pure text-paper-bone font-mono text-xs font-bold uppercase tracking-wider">
+              + Add First Piece
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = items.map(item => `
+        <div class="polaroid-frame p-2.5 border border-paper-border flex flex-col justify-between group relative">
+          <div class="h-36 w-full overflow-hidden bg-paper-bone border border-paper-border mb-2 relative">
+            ${item.img ? `<img src="${item.img}" class="w-full h-full object-cover">` : `
+              <div class="h-full flex items-center justify-center p-2 text-center font-mono text-[10px] text-ink-muted bg-paper-cream">
+                ${item.fabric}
+              </div>
+            `}
+            <span class="absolute top-1 left-1 bg-paper-bone/90 backdrop-blur-sm px-1.5 py-0.5 text-[8px] font-mono font-bold tracking-widest text-ink-pure border border-paper-border uppercase">
+              ${item.category}
+            </span>
+            <button onclick="deletePiece('${item.id}')" class="absolute top-1 right-1 bg-white/90 p-1 text-ink-faded hover:text-accent-terracotta border border-paper-border">
+              <i data-lucide="trash-2" class="w-3 h-3"></i>
+            </button>
+          </div>
+
+          <div>
+            <h4 class="font-serif font-bold text-xs text-ink-pure truncate">${item.name}</h4>
+            <p class="font-mono text-[9px] text-ink-muted truncate">${item.fabric} • ${item.color}</p>
+            ${item.notes ? `<p class="font-mono text-[8px] text-ink-faded italic truncate mt-0.5">${item.notes}</p>` : ''}
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function deletePiece(id) {
+      appState.wardrobe = appState.wardrobe.filter(i => i.id !== id);
+      saveWardrobe();
+      deleteItemFromSupabase(id);
+      showEditorialToast('Piece removed from closet.', 'EXPUNGED');
+    }
+
+    function updateCounters() {
+      const badge = document.getElementById('inventory-count-badge');
+      if (badge) badge.textContent = `${appState.wardrobe.length} items`;
+    }
+
+    // Saved Looks Lookbook
+    function renderSavedLooksGrid() {
+      const grid = document.getElementById('saved-cuts-grid');
+      const counter = document.getElementById('saved-counter');
+      if (!grid) return;
+
+      counter.textContent = `${appState.savedLooks.length} Saved`;
+
+      if (appState.savedLooks.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-16 text-center border border-dashed border-paper-border bg-paper-cream p-6">
+            <span class="text-[10px] font-mono text-ink-muted uppercase tracking-widest block mb-1">[EMPTY LOOKBOOK]</span>
+            <p class="font-serif text-sm text-ink-charcoal">No saved outfits yet.</p>
+            <p class="text-xs font-mono text-ink-muted mt-1">Generate a cut in the Reels or Mirror tab and tap Save.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = appState.savedLooks.map(look => `
+        <div class="polaroid-frame p-3.5 border border-paper-border relative flex flex-col justify-between">
+          <div class="washi-tape"></div>
+          
+          <div class="flex items-center justify-between pb-2 mb-2 border-b border-paper-border">
+            <div>
+              <span class="text-[9px] font-mono text-accent-terracotta uppercase font-bold">${look.date}</span>
+              <h4 class="font-serif font-black text-sm text-ink-pure uppercase leading-tight">${look.title}</h4>
+            </div>
+            <button onclick="removeSavedLook('${look.id}')" class="text-ink-faded hover:text-accent-terracotta p-1">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <div class="space-y-1 font-mono text-[10px] text-ink-muted pt-1">
+            <p class="truncate"><strong class="text-ink-pure">TOP:</strong> ${look.items.top?.name || '—'}</p>
+            <p class="truncate"><strong class="text-ink-pure">HIJAB:</strong> ${look.items.hijab?.name || '—'}</p>
+            <p class="truncate"><strong class="text-ink-pure">LIP:</strong> ${look.items.beauty?.name || '—'}</p>
+          </div>
+
+          <button onclick="applyLookToReels('${look.id}')" class="mt-3 w-full py-2 bg-paper-cream hover:bg-paper-deep text-ink-pure font-mono text-[10px] font-bold uppercase tracking-wider border border-paper-border">
+            Load to Reels & Mirror &rarr;
+          </button>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function removeSavedLook(id) {
+      appState.savedLooks = appState.savedLooks.filter(l => l.id !== id);
+      saveSavedLooks();
+      showEditorialToast('Look deleted.');
+    }
+
+    function applyLookToReels(id) {
+      const look = appState.savedLooks.find(l => l.id !== id);
+      if (!look) return;
+      appState.activeCut = { ...look.items };
+      Object.keys(look.items).forEach(slot => renderSlot(slot, look.items[slot]));
+      syncToMirror();
+      switchTab('mirror');
+      showEditorialToast('Loaded to Mirror.');
+    }
+
+    // Weekly Agenda System
+    const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+    function openScheduleModal() {
+      document.getElementById('modal-agenda-sheet').classList.remove('hidden');
+    }
+    function closeAgendaModal() {
+      document.getElementById('modal-agenda-sheet').classList.add('hidden');
+    }
+
+    function commitAgendaEntry() {
+      const day = document.getElementById('agenda-target-day').value;
+      const note = document.getElementById('agenda-day-note').value.trim() || 'Daily Fit';
+
+      appState.agenda[day] = {
+        note,
+        items: { ...appState.activeCut }
+      };
+
+      saveAgenda();
+      closeAgendaModal();
+      showEditorialToast(`Assigned to ${day}.`, 'SCHEDULED');
+      switchTab('planner');
+    }
+
+    function clearAgenda(day) {
+      appState.agenda[day] = null;
+      saveAgenda();
+      showEditorialToast(`Cleared ${day}.`);
+    }
+
+    function renderAgendaCalendar() {
+      const grid = document.getElementById('agenda-calendar-grid');
+      if (!grid) return;
+
+      grid.innerHTML = DAYS.map(day => {
+        const item = appState.agenda[day];
+        const hasFit = !!item;
+
+        return `
+          <div class="polaroid-frame p-2.5 border border-paper-border min-h-[170px] flex flex-col justify-between relative ${hasFit ? 'bg-paper-card' : 'bg-paper-bone/40'}">
+            <div class="washi-tape"></div>
+            
+            <div class="flex items-center justify-between pb-1 border-b border-paper-border">
+              <span class="font-mono text-[10px] font-bold text-ink-pure uppercase">${day.substring(0,3)}</span>
+              ${hasFit ? `
+                <button onclick="clearAgenda('${day}')" class="text-ink-faded hover:text-accent-terracotta">
+                  <i data-lucide="x" class="w-3 h-3"></i>
+                </button>
+              ` : ''}
+            </div>
+
+            ${hasFit ? `
+              <div class="my-2 space-y-1 font-mono text-[9px]">
+                <p class="font-serif font-bold text-xs text-ink-pure truncate">${item.items.top?.name || 'Look'}</p>
+                <p class="text-accent-olive truncate">${item.items.hijab?.name || ''}</p>
+                <p class="font-serif italic text-ink-muted text-[10px] line-clamp-2">${item.note}</p>
+              </div>
+            ` : `
+              <div class="text-center py-4 font-mono text-[9px] text-ink-faded">
+                [OPEN]
+              </div>
+            `}
+
+            <button onclick="document.getElementById('agenda-target-day').value='${day}'; openScheduleModal();" class="w-full py-1 bg-paper-cream text-ink-pure font-mono text-[9px] uppercase border border-paper-border">
+              ${hasFit ? 'Change' : '+ Set'}
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function renderAllViews() {
+      generateRandomCut();
+      syncToMirror();
+      renderCatalogGrid();
+      renderAgendaCalendar();
+      renderSavedLooksGrid();
+      updateCounters();
+    }
+  </script>
+
+</body>
+</html>
